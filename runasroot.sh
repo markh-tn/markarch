@@ -1,10 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Check if root is running this script
+echo "The installation will now begin."
+# Get Git Got and everything else
+pacman -Sy --noconfirm --needed git glibc gptfdisk btrfs-progs
 
-if [ "`id -u`" -ne 0 ]
-then
-    echo -e "\n\nThis script can only be run as root.\n\n"
-    exit -1
-fi
-echo "This script has been run as root."
