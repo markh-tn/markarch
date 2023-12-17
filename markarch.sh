@@ -41,9 +41,9 @@ umount -A --recursive /mnt
 # For GPT
 parted -s /dev/$DEVNAME mklabel gpt
 # Create Partitions
-parted -s /dev/$DEVNAME mkpart primary fat32 1MG 500MB
+parted -s /dev/$DEVNAME mkpart primary fat32 1MB 500MB
 parted -s /dev/$DEVNAME mkpart primary linux-swap 500MB 1.5GB
-parted -s /dev/$DEVNAME mkpart primary ext4 2512 100%
+parted -s /dev/$DEVNAME mkpart primary ext4 1.5GB 100%
 parted -s /dev/$DEVNAME set 1 boot on
 # Format new Partitions
 if [ "$DEVNAME" = "nvme0n1" ]
