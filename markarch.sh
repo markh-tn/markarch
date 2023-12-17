@@ -52,14 +52,12 @@ pacstrap /mnt bluez bluez-utils blueman git networkmanager network-manager-apple
 # Can't forget fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
-echo -ne "
----------------------------------
----Installing GRUB Bootloader----
----------------------------------
-"
+#echo -ne "
+#---------------------------------
+#---Installing GRUB Bootloader----
+#---------------------------------
+#"
 
-grub-install --target=x86_64-efi --efi-directory=/boot /dev/sda
-grub-mkconfig -o /boot/grub/grub.cfg
 
 
 
