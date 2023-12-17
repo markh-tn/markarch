@@ -8,8 +8,11 @@ echo -ne "
 
 echo "The installation will now begin."
 
-echo "This script is assuming your main drive is sda. If it isnt please quit this script."
-read
+echo -ne "
+What is the name of your Drive?
+[1] sda
+[2] nvme0n1"
+read DRIVNAME
 
 echo "Enter your username:"
 read USER
@@ -22,6 +25,15 @@ echo -ne "
 -----Configuring Main Drive------
 ---------------------------------
 "
+if [ "$DRIVNAME" = "1" ];
+then
+        DEVNAME="sda"
+else
+    if [ "$DRIVNAME" = "2" ];
+    then
+        DEVNAME="nvme0n1p"
+    else
+
 # Make sure everything is unmounted
 umount -A --recursive /mnt
 # For GPT
