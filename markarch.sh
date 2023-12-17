@@ -11,7 +11,8 @@ echo "The installation will now begin."
 echo -ne "
 What is the name of your Drive?
 [1] sda
-[2] nvme0n1"
+[2] nvme0n1
+"
 read DRIVNAME
 
 echo "Enter your username:"
@@ -70,10 +71,4 @@ genfstab -U /mnt >> /mnt/etc/fstab
 #---------------------------------
 #"
 
-
-
-
-
-
-
-
+exit
