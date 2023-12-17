@@ -15,11 +15,12 @@ What is the name of your Drive?
 "
 read DRIVNAME
 
-echo "Enter your username:"
-read USER
+# I'll uncomment the stuff below once I get most of the script working
+#echo "Enter your username:"
+#read USER
 
-echo "Enter your chosen password:"
-read PASS
+#echo "Enter your chosen password:"
+#read PASS
 
 echo -ne "
 ---------------------------------
@@ -28,31 +29,35 @@ echo -ne "
 "
 if [ "$DRIVNAME" = "1" ];
 then
-        DEVNAME="sda"
-else
-    if [ "$DRIVNAME" = "2" ];
-    then
-        DEVNAME="nvme0n1p"
-    else
+   DEVNAME="sda"
+fi
 
+if [ "$DRIVNAME" = "2" ];
+then
+    DEVNAME="nvme0n1"
+fi
 # Make sure everything is unmounted
 umount -A --recursive /mnt
 # For GPT
-parted -s /dev/sda mklabel gpt
+parted -s /dev/$DEVNAME mklabel gpt
 # Create Partitions
-parted -s /dev/sda mkpart primary fat32 1MG 500MB
-parted -s /dev/sda mkpart primary linux-swap 500MB 1.5GB
-parted -s /dev/sda mkpart primary ext4 2512 100%
-parted -s /dev/sda set 1 boot on
+parted -s /dev/$DEVNAME mkpart primary fat32 1MG 500MB
+parted -s /dev/$DEVNAME mkpart primary linux-swap 500MB 1.5GB
+parted -s /dev/$DEVNAME mkpart primary ext4 2512 100%
+parted -s /dev/$DEVNAME set 1 boot on
 # Format new Partitions
-mkfs.fat -F 32 /dev/sda1
-mkswap /dev/sda2
-mkfs.ext4 /dev/sda3
+if [ "$DEVNAME" = "nvme0n1" ]
+then
+    DEVNAME="nvme0n1p"
+fi
+mkfs.fat -F 32 /dev/"$DEVNAME"1
+mkswap /dev/"$DEVNAME"2
+mkfs.ext4 /dev/"$DEVNAME"3
 
 # Mounting the partitions
-mount --mkdir /dev/sda1 /mnt/boot
-swapon /dev/sda2
-mount /dev/sda3 /mnt
+mount --mkdir /dev/"$DEVNAME"1 /mnt/boot
+swapon /dev/"$DEVNAME"2
+mount /dev/"$DEVNAME"3 /mnt
 
 echo -ne "
 ---------------------------------
@@ -70,5 +75,4 @@ genfstab -U /mnt >> /mnt/etc/fstab
 #---Installing GRUB Bootloader----
 #---------------------------------
 #"
-
 exit
