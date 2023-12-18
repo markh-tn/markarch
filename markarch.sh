@@ -15,12 +15,14 @@ What is the name of your Drive?
 "
 read DRIVNAME
 
-# I'll uncomment the stuff below once I get most of the script working
-#echo "Enter your username:"
-#read USER
+echo "What will you call this computer?"
+read PCNAME
 
-#echo "Enter your chosen password:"
-#read PASS
+echo "Create your username:"
+read USER
+
+echo "Create a secure password:"
+read PASS
 
 echo -ne "
 ---------------------------------
@@ -55,9 +57,9 @@ mkswap /dev/"$DEVNAME"2
 mkfs.ext4 /dev/"$DEVNAME"3
 
 # Mounting the partitions
-mount --mkdir /dev/"$DEVNAME"1 /mnt/boot
 swapon /dev/"$DEVNAME"2
 mount /dev/"$DEVNAME"3 /mnt
+mount --mkdir /dev/"$DEVNAME"1 /mnt/boot/efi
 
 echo -ne "
 ---------------------------------
@@ -65,8 +67,8 @@ echo -ne "
 ---------------------------------
 "
 pacstrap /mnt base base-devel linux linux-firmware nano sudo grub efibootmgr --noconfirm --needed
-# Network and Bluetooth Stuff that'll probably be needed
-pacstrap /mnt bluez bluez-utils blueman git networkmanager network-manager-applet wireless_tools --noconfirm --needed
+# Network and Bluetooth Stuff that'll probably be needed & neofetch just cuz neofetch
+pacstrap /mnt bluez bluez-utils blueman git networkmanager network-manager-applet wireless_tools neofetch --noconfirm --needed
 # Can't forget fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -75,8 +77,35 @@ echo -ne "
 ---Installing GRUB Bootloader----
 ---------------------------------
 "
-mkdir /mnt/boot/efi
-grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
-grub-mkconfig -o /mnt/boot
+if [ "$DEVNAME" = "nvme0n1p" ]
+then
+    DEVNAME="nvme0n1"
+fi
+arch-chroot /mnt
+grub-install --efi-directory=/boot/efi --target=x86_64-efi /dev/$DEVNAME
+grub-mkconfig -o /boot
+sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="[^"]*/& splash /' /etc/default/grub
+
+echo -ne "
+---------------------------------
+-Setting up Language and Locale--
+---------------------------------
+"
+sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+timedatectl set-timezone "America/New_York"
+hwclock --systohc
+
+echo -ne "
+---------------------------------
+----------Creating User----------
+---------------------------------
+"
+
+useradd -m -G wheel,storage,audio,power -s /bin/bash $USER
+echo $USER:$PASS | chpasswd
+
+
 
 exit
