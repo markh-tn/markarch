@@ -66,7 +66,7 @@ echo -ne "
 ------Installing Arch Linux------
 ---------------------------------
 "
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools --noconfirm --needed
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools man --noconfirm --needed
 # Network and Bluetooth Stuff that'll probably be needed & neofetch just cuz neofetch
 pacstrap /mnt bluez bluez-utils blueman git networkmanager network-manager-applet wireless_tools neofetch --noconfirm --needed
 # Can't forget fstab
@@ -104,9 +104,9 @@ echo -ne "
 "
 
 useradd -m -G wheel,storage,audio,power -s /bin/bash $USER
-echo $USER:$PASS | chpasswd
 SUSTR="%wheel ALL=(ALL) ALL"
 sed -i "/^$SUSTR/s/^# //" "/etc/sudoers"
+echo $USER:$PASS | chpasswd
 LINE="$USER ALL=(ALL) ALL"
 echo "$LINE" | sudo EDITOR='tee -a' visudo
 echo root:$PASS | chpasswd
