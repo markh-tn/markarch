@@ -22,7 +22,7 @@ echo "Create your username:"
 read USER
 
 echo "Create a secure password:"
-read PASS
+read -s PASS
 
 echo -ne "
 ---------------------------------
@@ -105,8 +105,7 @@ echo -ne "
 
 useradd -m -G wheel,storage,audio,power -s /bin/bash $USER
 echo $USER:$PASS | chpasswd
-STR="%wheel ALL=(ALL) ALL"
-sed -i "/^$STR/s/^# //" "/etc/sudoers"
+sed -i "/^%wheel ALL=(ALL) ALL/s/^# //" "/etc/sudoers"
 
 
 EOF
