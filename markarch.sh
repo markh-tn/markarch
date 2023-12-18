@@ -81,16 +81,16 @@ if [ "$DEVNAME" = "nvme0n1p" ]
 then
     DEVNAME="nvme0n1"
 fi
-arch-chroot /mnt
+arch-chroot /mnt /bin/bash <<EOF
 grub-install --efi-directory=/boot/efi --target=x86_64-efi /dev/$DEVNAME
-grub-mkconfig -o /boot
-sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="[^"]*/& splash /' /etc/default/grub
+grub-mkconfig -o /boot/efi
 
 echo -ne "
 ---------------------------------
 -Setting up Language and Locale--
 ---------------------------------
 "
+
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
@@ -106,6 +106,5 @@ echo -ne "
 useradd -m -G wheel,storage,audio,power -s /bin/bash $USER
 echo $USER:$PASS | chpasswd
 
-
-
+EOF
 exit
