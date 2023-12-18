@@ -27,12 +27,12 @@ echo -ne "
 -----Configuring Main Drive------
 ---------------------------------
 "
-if [ "$DRIVNAME" = "1" ];
+if [ "$DRIVNAME" = "1" ]
 then
    DEVNAME="sda"
 fi
 
-if [ "$DRIVNAME" = "2" ];
+if [ "$DRIVNAME" = "2" ]
 then
     DEVNAME="nvme0n1"
 fi
@@ -61,7 +61,7 @@ mount /dev/"$DEVNAME"3 /mnt
 
 echo -ne "
 ---------------------------------
----Beginning Arch Installation---
+------Installing Arch Linux------
 ---------------------------------
 "
 pacstrap /mnt base base-devel linux linux-firmware nano sudo grub efibootmgr --noconfirm --needed
@@ -75,6 +75,7 @@ echo -ne "
 ---Installing GRUB Bootloader----
 ---------------------------------
 "
+mkdir /mnt/boot/efi
 grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
 grub-mkconfig -o /mnt/boot
 
