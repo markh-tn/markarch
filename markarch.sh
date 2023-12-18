@@ -105,9 +105,10 @@ echo -ne "
 
 useradd -m -G wheel,storage,audio,power -s /bin/bash $USER
 echo $USER:$PASS | chpasswd
-sed -i "/^%wheel ALL=(ALL) ALL/s/^# //" "/etc/sudoers"
-line="$USER ALL=(ALL) ALL"
-echo "$line" | sudo EDITOR='tee -a' visudo
+SUSTR="%wheel ALL=(ALL) ALL"
+sed -i "/^$SUSTR/s/^# //" "/etc/sudoers"
+LINE="$USER ALL=(ALL) ALL"
+echo "$LINE" | sudo EDITOR='tee -a' visudo
 echo root:$PASS | chpasswd
 
 
