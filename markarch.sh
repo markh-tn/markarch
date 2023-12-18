@@ -105,6 +105,9 @@ echo -ne "
 
 useradd -m -G wheel,storage,audio,power -s /bin/bash $USER
 echo $USER:$PASS | chpasswd
+STR="%wheel ALL=(ALL) ALL"
+sed -i "/^$STR/s/^# //" "/etc/sudoers"
+
 
 EOF
 exit
