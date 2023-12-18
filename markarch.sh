@@ -66,7 +66,7 @@ echo -ne "
 ------Installing Arch Linux------
 ---------------------------------
 "
-pacstrap /mnt base base-devel linux linux-firmware nano sudo grub efibootmgr --noconfirm --needed
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano sudo grub efibootmgr os-prober mtools --noconfirm --needed
 # Network and Bluetooth Stuff that'll probably be needed & neofetch just cuz neofetch
 pacstrap /mnt bluez bluez-utils blueman git networkmanager network-manager-applet wireless_tools neofetch --noconfirm --needed
 # Can't forget fstab
@@ -82,8 +82,8 @@ then
     DEVNAME="nvme0n1"
 fi
 arch-chroot /mnt /bin/bash <<EOF
-grub-install --efi-directory=/boot/efi --target=x86_64-efi /dev/$DEVNAME
-grub-mkconfig -o /boot/efi
+grub-install --efi-directory=/boot/efi --target=x86_64-efi /dev/$DEVNAME --recheck
+grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -ne "
 ---------------------------------
@@ -94,7 +94,7 @@ echo -ne "
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-timedatectl set-timezone "America/New_York"
+ln -sf /usr/share/zoneinfo/Zone/SubZone /etc/localtime
 hwclock --systohc
 
 echo -ne "
