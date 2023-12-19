@@ -143,10 +143,13 @@ echo -ne "
 ---------------------------------
 "
 # I do plan for this section to be optional in the future but not right now
-pacman -S mime-types ttf-font ffmpeg --noconfirm --needed
-sudo su $USER
+EOF
+arch-chroot -u $USER /mnt /bin/bash <<EOF
+# I do plan for this section to be optional in the future but not right now
+echo $PASS | sudo pacman -S mime-types ttf-font ffmpeg --noconfirm --needed
 git clone https://aur.archlinux.org/librewolf-bin.git /home/$USER/librewolf-bin
 (cd /home/$USER/librewolf-bin && echo $PASS | makepkg -si)
+rm -rf /home/mark/librewolf-bin
 
 echo -ne "
 ---------------------------------
