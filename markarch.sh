@@ -134,7 +134,7 @@ echo -ne "
 ---Audio & Video Configuration---
 ---------------------------------
 "
-pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad --noconfirm --needed
+pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal --noconfirm --needed
 systemctl enable lightdm
 
 echo -ne "
