@@ -145,8 +145,8 @@ echo -ne "
 # I do plan for this section to be optional in the future but not right now
 pacman -S mime-types ttf-font ffmpeg --noconfirm --needed
 sudo su $USER
-git clone https://aur.archlinux.org/librewolf-bin.git $HOME/librewolf-bin
-(cd $HOME/librewolf-bin && echo $PASS | makepkg -si)
+git clone https://aur.archlinux.org/librewolf-bin.git /home/$USER/librewolf-bin
+(cd /home/$USER/librewolf-bin && echo $PASS | makepkg -si)
 
 echo -ne "
 ---------------------------------
