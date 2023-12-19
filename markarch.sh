@@ -66,7 +66,7 @@ echo -ne "
 ------Installing Arch Linux------
 ---------------------------------
 "
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools man --noconfirm --needed
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils --noconfirm --needed
 # Network and Bluetooth Stuff that'll probably be needed & neofetch just cuz neofetch
 pacstrap /mnt bluez bluez-utils blueman git networkmanager network-manager-applet wireless_tools neofetch --noconfirm --needed
 # Can't forget fstab
@@ -94,7 +94,7 @@ echo -ne "
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-ln -sf /usr/share/zoneinfo/Zone/SubZone /etc/localtime
+ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
 
 echo -ne "
@@ -110,7 +110,19 @@ echo $USER:$PASS | chpasswd
 LINE="$USER ALL=(ALL) ALL"
 echo "$LINE" | sudo EDITOR='tee -a' visudo
 echo root:$PASS | chpasswd
+echo "User Creation Finished."
 
+echo -ne "
+---------------------------------
+------Network Configuration------
+---------------------------------
+"
+
+sysctl kernel.hostname=$PCNAME
+echo "$PCNAME" >> /etc/hostname
+echo "127.0.0.1     localhost" >> /etc/hosts
+echo "::1     localhost" >> /etc/hosts
+echo "127.0.1.1     $PCNAME.localdomain     $PCNAME" >> /etc/hosts
 
 EOF
 exit
