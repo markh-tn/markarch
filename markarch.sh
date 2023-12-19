@@ -24,6 +24,10 @@ read USER
 echo "Create a secure password:"
 read -s PASS
 
+# This will be used to install VirtualBox Guest Additions once I know how to
+#echo "Are you running this in Oracle Virtualbox? [Y/n]:"
+#read VIRBOX
+
 echo -ne "
 ---------------------------------
 -----Configuring Main Drive------
@@ -66,7 +70,7 @@ echo -ne "
 ------Installing Arch Linux------
 ---------------------------------
 "
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils --noconfirm --needed
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils git --noconfirm --needed
 # Network and Bluetooth Stuff that'll probably be needed & neofetch just cuz neofetch
 pacstrap /mnt bluez bluez-utils blueman git networkmanager network-manager-applet wireless_tools neofetch --noconfirm --needed
 # Can't forget fstab
@@ -123,6 +127,33 @@ echo "$PCNAME" >> /etc/hostname
 echo "127.0.0.1     localhost" >> /etc/hosts
 echo "::1     localhost" >> /etc/hosts
 echo "127.0.1.1     $PCNAME.localdomain     $PCNAME" >> /etc/hosts
+systemctl enable NetworkManager bluetooth
 
+echo -ne "
+---------------------------------
+---Audio & Video Configuration---
+---------------------------------
+"
+pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad --noconfirm --needed
+systemctl enable lightdm
+
+echo -ne "
+---------------------------------
+--------Installing Extras--------
+---------------------------------
+"
+# I do plan for this section to be optional in the future but not right now
+pacman -S mime-types ttf-font ffmpeg --noconfirm --needed
+sudo su $USER
+git clone https://aur.archlinux.org/librewolf-bin.git $HOME/librewolf-bin
+(cd $HOME/librewolf-bin && echo $PASS | makepkg -si)
+
+echo -ne "
+---------------------------------
+---Mark's Arch Install Script----
+---------------------------------
+"
+echo "Installation Completed! Remove the installation media and reboot"
+echo "Have fun! :)"
 EOF
 exit
