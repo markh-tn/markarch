@@ -24,12 +24,11 @@ read USER
 echo "Create a secure password:"
 read -s PASS
 
-echo -ne "Choose your web browser:
-[1] Firefox
-[2] Chromium
-[3] Vivaldi
-"
-read WEB_CHOICE
+case "$WEB_CHOICE" in
+    1) BROWSER="firefox" ;;
+    2) BROWSER="chromium" ;;
+    3) BROWSER="vivaldi" ;;
+esac
 
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
 read VIRBOX
@@ -140,20 +139,6 @@ echo -ne "
 ---Audio & Video Configuration---
 ---------------------------------
 "
-if [ "$WEB_CHOICE" = "1" ]
-then
-   BROWSER="firefox"
-fi
-
-if [ "$WEB_CHOICE" = "2" ]
-then
-    BROWSER="chromium"
-fi
-
-if [ "$WEB_CHOICE" = "3" ]
-then
-    BROWSER="vivaldi"
-fi
 
 pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal "$BROWSER" --noconfirm --needed
 systemctl enable lightdm
