@@ -27,15 +27,18 @@ read -s PASS
 echo -ne "Choose your web browser:
 [1] Firefox
 [2] Chromium
-[3] Vivaldi
 "
 read WEB_CHOICE
 
-case "$WEB_CHOICE" in
-    1) BROWSER="firefox" ;;
-    2) BROWSER="chromium" ;;
-    3) BROWSER="vivaldi" ;;
-esac
+if [ "$WEB_CHOICE" = "1" ]
+then
+    BROWSER="firefox"
+fi
+
+if [ "$WEB_CHOICE" = "2" ]
+then
+    BROWSER="chromium"
+fi
 
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
 read VIRBOX
@@ -47,7 +50,7 @@ echo -ne "
 "
 if [ "$DRIVNAME" = "1" ]
 then
-   DEVNAME="sda"
+    DEVNAME="sda"
 fi
 
 if [ "$DRIVNAME" = "2" ]
