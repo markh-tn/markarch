@@ -29,7 +29,7 @@ echo -ne "Choose your web browser:
 [2] Chromium
 [3] Vivaldi
 "
-read BROWSER
+read WEB_CHOICE
 
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
 read VIRBOX
@@ -140,22 +140,22 @@ echo -ne "
 ---Audio & Video Configuration---
 ---------------------------------
 "
-if [ "$BROWSER" = "1" ]
+if [ "$WEB_CHOICE" = "1" ]
 then
    BROWSER="firefox"
 fi
 
-if [ "$BROWSER" = "2" ]
+if [ "$WEB_CHOICE" = "2" ]
 then
     BROWSER="chromium"
 fi
 
-if [ "$BROWSER" = "3" ]
+if [ "$WEB_CHOICE" = "3" ]
 then
     BROWSER="vivaldi"
 fi
 
-pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal $BROWSER --noconfirm --needed
+pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal "$BROWSER" --noconfirm --needed
 systemctl enable lightdm
 
 if [ "$VIRBOX" = "y" ]
