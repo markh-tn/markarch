@@ -157,6 +157,8 @@ then
     echo "VirtualBox Guest Additions Install Script is located at /installvboxga.sh"
 fi
 
+curl -s https://i.imgur.com/uFNtT8K.png -O random.png
+curl -s https://www.pixelstalk.net/wp-content/uploads/2016/04/Red-moon-wallpaper-HD-desktop.jpg -O redmoon.jpg
 
 #echo -ne "
 #---------------------------------
