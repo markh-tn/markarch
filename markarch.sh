@@ -24,6 +24,13 @@ read USER
 echo "Create a secure password:"
 read -s PASS
 
+echo -ne "Choose your web browser:
+[1] Firefox
+[2] Chromium
+[3] Vivaldi
+"
+read WEB_CHOICE
+
 case "$WEB_CHOICE" in
     1) BROWSER="firefox" ;;
     2) BROWSER="chromium" ;;
