@@ -76,7 +76,7 @@ echo -ne "
 ------Installing Arch Linux------
 ---------------------------------
 "
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils git --noconfirm --needed
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils git intel-ucode --noconfirm --needed
 # Network and Bluetooth Stuff that'll probably be needed & neofetch just cuz neofetch
 pacstrap /mnt bluez bluez-utils blueman git networkmanager network-manager-applet wireless_tools neofetch --noconfirm --needed
 # Can't forget fstab
