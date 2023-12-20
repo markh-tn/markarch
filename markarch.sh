@@ -27,6 +27,7 @@ read -s PASS
 echo -ne "Choose your web browser:
 [1] Firefox
 [2] Chromium
+[3] Vivaldi
 "
 read WEB_CHOICE
 
@@ -38,6 +39,11 @@ fi
 if [ "$WEB_CHOICE" = "2" ]
 then
     BROWSER="chromium"
+fi
+
+if [ "$WEB_CHOICE" = "3" ]
+then
+    BROWSER="vivaldi"
 fi
 
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
