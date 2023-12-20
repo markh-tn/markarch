@@ -149,12 +149,11 @@ echo -ne "
 pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal "$BROWSER" --noconfirm --needed
 systemctl enable lightdm
 
+# This was gonna install the script to the users desktop folder but it just wont behave
 if [ "$VIRBOX" = "y" ]
 then
-    su $USER
-    mkdir /home/$USER/Desktop
-    curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh -O /home/$USER/Desktop/InstallVBoxGA.sh
-    chmod +x /home/$USER/Desktop/InstallVBoxGA.sh
+    curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh -O InstallVBoxGA.sh
+    chmod +x installvboxga.sh
 fi
 
 
