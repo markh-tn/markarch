@@ -154,6 +154,7 @@ if [ "$VIRBOX" = "y" ]
 then
     curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh -O InstallVBoxGA.sh
     chmod +x installvboxga.sh
+    echo "VirtualBox Guest Additions Install Script is located at /installvboxga.sh"
 fi
 
 
