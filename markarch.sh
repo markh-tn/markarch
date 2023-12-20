@@ -78,7 +78,7 @@ echo -ne "
 "
 pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils git intel-ucode --noconfirm --needed
 # Network and Bluetooth Stuff that'll probably be needed & neofetch just cuz neofetch
-pacstrap /mnt bluez bluez-utils blueman git networkmanager network-manager-applet wireless_tools neofetch --noconfirm --needed
+pacstrap /mnt bluez bluez-utils blueman networkmanager network-manager-applet wireless_tools neofetch --noconfirm --needed
 # Can't forget fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -160,7 +160,7 @@ systemctl enable lightdm
 
 if [ "$VIRBOX" = "y" ]
 then
-    curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh --createdirs -O /home/$USER/Desktop/InstallVBoxGA.sh
+    curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh --create-dirs -O /home/$USER/Desktop/InstallVBoxGA.sh
     chmod +x /home/$USER/Desktop/InstallVBoxGA.sh
 fi
 
