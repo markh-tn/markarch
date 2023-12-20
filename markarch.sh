@@ -152,7 +152,8 @@ systemctl enable lightdm
 
 if [ "$VIRBOX" = "y" ]
 then
-    curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh --create-dirs -O /home/$USER/Desktop/InstallVBoxGA.sh
+    mkdir /home/$USER/Desktop
+    curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh -O /home/$USER/Desktop/InstallVBoxGA.sh
     chmod +x /home/$USER/Desktop/InstallVBoxGA.sh
 fi
 
