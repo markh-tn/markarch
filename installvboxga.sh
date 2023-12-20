@@ -5,7 +5,7 @@ if [ "$EUID" -ne 0]; then
 fi
 echo "Installing VirtualBox Guest Additions..."
 
-pacman -S --noconfirm linux-headers virtualbox-guest-utils
+pacman -S --noconfirm virtualbox-guest-utils
 modprobe -a vboxguest vboxsf vboxvideo
 systemctl enable vboxservice.service
 

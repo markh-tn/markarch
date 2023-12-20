@@ -31,8 +31,8 @@ echo -ne "Choose your web browser:
 "
 read BROWSER
 
-#echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
-#read VIRBOX
+echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
+read VIRBOX
 
 echo -ne "
 ---------------------------------
@@ -157,6 +157,13 @@ fi
 
 pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal $BROWSER --noconfirm --needed
 systemctl enable lightdm
+
+if [ "$VIRBOX" = "y" ]
+then
+    curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh --createdirs -O /home/$USER/Desktop/InstallVBoxGA.sh
+    chmod +x /home/$USER/Desktop/InstallVBoxGA.sh
+fi
+
 
 #echo -ne "
 #---------------------------------
