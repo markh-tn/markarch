@@ -30,21 +30,11 @@ echo -ne "Choose your web browser:
 [3] Vivaldi
 "
 read WEB_CHOICE
-
-if [ "$WEB_CHOICE" = "1" ]
-then
-    BROWSER="firefox"
-fi
-
-if [ "$WEB_CHOICE" = "2" ]
-then
-    BROWSER="chromium"
-fi
-
-if [ "$WEB_CHOICE" = "3" ]
-then
-    BROWSER="vivaldi"
-fi
+case "$WEB_CHOICE" in
+    1) BROWSER="firefox" ;;
+    2) BROWSER="chromium" ;;
+    3) BROWSER="vivaldi" ;;
+esac
 
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
 read VIRBOX
