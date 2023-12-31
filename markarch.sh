@@ -104,7 +104,7 @@ echo -ne "
 if [ "$DEVNAME" = "nvme0n1p" ]; then
     DEVNAME="nvme0n1"
 fi
-arch-chroot /mnt /bin/bash <<-EOF
+arch-chroot /mnt /bin/bash <<EOF
 grub-install --efi-directory=/boot/efi --target=x86_64-efi /dev/$DEVNAME --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 
