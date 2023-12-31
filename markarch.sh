@@ -166,32 +166,31 @@ fi
 
 if [ "$INSTYPE" = "2" ]; then
     
-    echo -ne "
-    ---------------------------------
-    ---Mark's Arch Install Script----
-    ---------------------------------
-    "
-    echo "Installation Completed! Remove the installation media and reboot"
-    echo "Have fun! :)"
-    exit
+echo -ne "
+---------------------------------
+---Mark's Arch Install Script----
+---------------------------------
+"
+echo "Installation Completed! Remove the installation media and reboot"
+echo "Have fun! :)"
+exit
 fi
 
 if [ "$INSTYPE" = "1" ]; then
-    echo -ne "
-    ---------------------------------
-    --------Installing Extras--------
-    ---------------------------------
-    "
+echo -ne "
+---------------------------------
+--------Installing Extras--------
+---------------------------------
+"
+pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind --noconfirm --needed
 
-    pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind --noconfirm --needed
-
-    echo -ne "
-    ---------------------------------
-    ---Mark's Arch Install Script----
-    ---------------------------------
-    "
-    echo "Installation Completed! Remove the installation media and reboot"
-    echo "Have fun! :)"
+echo -ne "
+---------------------------------
+---Mark's Arch Install Script----
+---------------------------------
+"
+echo "Installation Completed! Remove the installation media and reboot"
+echo "Have fun! :)"
 fi
 EOF
 exit
