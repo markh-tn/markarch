@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 echo -ne "
+
+"
+echo -ne "
 ---------------------------------
 ---Mark's Arch Install Script----
 ---------------------------------
