@@ -173,7 +173,6 @@ if [ "$INSTYPE" = "2" ]; then
     "
     echo "Installation Completed! Remove the installation media and reboot"
     echo "Have fun! :)"
-EOF
     exit
 fi
 
@@ -184,7 +183,7 @@ if [ "$INSTYPE" = "1" ]; then
     ---------------------------------
     "
 
-    pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch --noconfirm --needed
+    pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind --noconfirm --needed
 
     echo -ne "
     ---------------------------------
@@ -193,5 +192,6 @@ if [ "$INSTYPE" = "1" ]; then
     "
     echo "Installation Completed! Remove the installation media and reboot"
     echo "Have fun! :)"
+fi
 EOF
-    exit
+exit
