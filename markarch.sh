@@ -173,7 +173,7 @@ if [ "$INSTYPE" = "2" ]; then
     "
     echo "Installation Completed! Remove the installation media and reboot"
     echo "Have fun! :)"
-    EOF
+EOF
     exit
 fi
 
@@ -193,5 +193,5 @@ if [ "$INSTYPE" = "1" ]; then
     "
     echo "Installation Completed! Remove the installation media and reboot"
     echo "Have fun! :)"
-    EOF
+EOF
     exit
