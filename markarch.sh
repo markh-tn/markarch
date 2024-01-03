@@ -164,17 +164,6 @@ if [ "$VIRBOX" = "y" ]; then
     echo "VirtualBox Guest Additions Install Script is located at /installvboxga.sh"
 fi
 
-if [ "$INSTYPE" = "2" ]; then
-    
-echo -ne "
----------------------------------
----Mark's Arch Install Script----
----------------------------------
-"
-echo "Installation Completed! Remove the installation media and reboot"
-echo "Have fun! :)"
-exit
-fi
 
 if [ "$INSTYPE" = "1" ]; then
 echo -ne "
