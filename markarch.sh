@@ -20,6 +20,12 @@ echo -ne "Installation Type:
 "
 read INSTYPE
 
+echo -ne "Choose your desktop environment
+[1] Cinnamon
+[2] XFCE
+"
+read DECHOICE
+
 echo -ne "
 What is the name of your Drive?
 [1] sda
@@ -41,8 +47,8 @@ echo -ne "Choose your web browser:
 [2] Chromium
 [3] Vivaldi
 "
-read WEB_CHOICE
-case "$WEB_CHOICE" in
+read WEBCHOICE
+case "$WEBCHOICE" in
     1) BROWSER="firefox" ;;
     2) BROWSER="chromium" ;;
     3) BROWSER="vivaldi" ;;
@@ -154,12 +160,18 @@ echo -ne "
 ---------------------------------
 "
 
-pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal htop "$BROWSER" --noconfirm --needed
+pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg lightdm lightdm-gtk-greeter htop "$BROWSER" --noconfirm --needed
+
+if [ "$DECHOICE" = "1" ]; then
+    pacman -S gnome-terminal mousepad cinnamon --noconfirm --needed
+elif [ "$DECHOICE" = "2" ]; then
+    pacman -S xfce4 xfce4-goodies --noconfirm --needed
+fi
 systemctl enable lightdm
 
 # This was gonna install the script to the users desktop folder but it just wont behave
 if [ "$VIRBOX" = "y" ]; then
-    curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh -O InstallVBoxGA.sh
+    curl -s https://raw.githubusercontent.com/markh-tn/markarch/main/installvboxga.sh -O InstallVBoxGA.sh
     chmod +x installvboxga.sh
     echo "VirtualBox Guest Additions Install Script is located at /installvboxga.sh"
 fi
@@ -182,7 +194,7 @@ echo -ne "
 --------Installing Extras--------
 ---------------------------------
 "
-pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind --noconfirm --needed
+pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind ristretto --noconfirm --needed
 
 echo -ne "
 ---------------------------------
