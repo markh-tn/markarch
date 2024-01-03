@@ -1,12 +1,24 @@
 #!/usr/bin/env bash
 
 echo -ne "
+
+
+
+
+"
+echo -ne "
 ---------------------------------
 ---Mark's Arch Install Script----
 ---------------------------------
 "
 
 echo "The installation will now begin."
+
+echo -ne "Installation Type:
+[1] Normal installation (Includes web browser, LibreOffice, media player, and other utilities.)
+[2] Minimal installation (Includes web browser and basic utilities.)
+"
+read INSTYPE
 
 echo -ne "
 What is the name of your Drive?
@@ -44,13 +56,11 @@ echo -ne "
 -----Configuring Main Drive------
 ---------------------------------
 "
-if [ "$DRIVNAME" = "1" ]
-then
+if [ "$DRIVNAME" = "1" ]; then
     DEVNAME="sda"
 fi
 
-if [ "$DRIVNAME" = "2" ]
-then
+if [ "$DRIVNAME" = "2" ]; then
     DEVNAME="nvme0n1"
 fi
 # Make sure everything is unmounted
@@ -63,8 +73,7 @@ parted -s /dev/$DEVNAME mkpart primary linux-swap 500MB 1.5GB
 parted -s /dev/$DEVNAME mkpart primary ext4 1.5GB 100%
 parted -s /dev/$DEVNAME set 1 boot on
 # Format new Partitions
-if [ "$DEVNAME" = "nvme0n1" ]
-then
+if [ "$DEVNAME" = "nvme0n1" ]; then
     DEVNAME="nvme0n1p"
 fi
 mkfs.fat -F 32 /dev/"$DEVNAME"1
@@ -82,8 +91,8 @@ echo -ne "
 ---------------------------------
 "
 pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils git --noconfirm --needed
-# Network and Bluetooth Stuff that'll probably be needed & neofetch just cuz neofetch
-pacstrap /mnt bluez bluez-utils blueman networkmanager network-manager-applet wireless_tools neofetch --noconfirm --needed
+# Network and Bluetooth Stuff that'll probably be needed
+pacstrap /mnt bluez bluez-utils blueman networkmanager network-manager-applet wireless_tools --noconfirm --needed
 # Can't forget fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -92,8 +101,7 @@ echo -ne "
 ---Installing GRUB Bootloader----
 ---------------------------------
 "
-if [ "$DEVNAME" = "nvme0n1p" ]
-then
+if [ "$DEVNAME" = "nvme0n1p" ]; then
     DEVNAME="nvme0n1"
 fi
 arch-chroot /mnt /bin/bash <<EOF
@@ -146,24 +154,24 @@ echo -ne "
 ---------------------------------
 "
 
-pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal "$BROWSER" --noconfirm --needed
+pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal htop "$BROWSER" --noconfirm --needed
 systemctl enable lightdm
 
 # This was gonna install the script to the users desktop folder but it just wont behave
-if [ "$VIRBOX" = "y" ]
-then
+if [ "$VIRBOX" = "y" ]; then
     curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh -O InstallVBoxGA.sh
     chmod +x installvboxga.sh
     echo "VirtualBox Guest Additions Install Script is located at /installvboxga.sh"
 fi
 
-curl -s https://www.pixelstalk.net/wp-content/uploads/2016/04/Red-moon-wallpaper-HD-desktop.jpg -O redmoon.jpg
 
-#echo -ne "
-#---------------------------------
-#--------Installing Extras--------
-#---------------------------------
-#"
+if [ "$INSTYPE" = "1" ]; then
+echo -ne "
+---------------------------------
+--------Installing Extras--------
+---------------------------------
+"
+pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind --noconfirm --needed
 
 echo -ne "
 ---------------------------------
@@ -172,5 +180,6 @@ echo -ne "
 "
 echo "Installation Completed! Remove the installation media and reboot"
 echo "Have fun! :)"
+fi
 EOF
 exit

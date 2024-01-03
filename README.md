@@ -9,4 +9,3 @@ In the Arch Linux iso, run this command.
 bash <(curl -L https://raw.githubusercontent.com/markh-tn/markarch/main/markarch.sh)
 ```
 Select your preferences, and there you go!
-### This script installs the Cinnamon desktop enviroment by default, I may include other DEs in the future.
