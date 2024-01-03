@@ -64,9 +64,7 @@ echo -ne "
 "
 if [ "$DRIVNAME" = "1" ]; then
     DEVNAME="sda"
-fi
-
-if [ "$DRIVNAME" = "2" ]; then
+elif [ "$DRIVNAME" = "2" ]; then
     DEVNAME="nvme0n1"
 fi
 # Make sure everything is unmounted
