@@ -11,11 +11,8 @@ systemctl enable vboxservice.service
 
 echo "Installation Complete! Would you like to reboot? [Y/n]"
 read RBQ
-if [ "$RBQ" = "y" ]
-then
-    reboot now
-fi
-if [ "$RBQ" = "n" ]
-then
-    exit
+if [ "$RBQ" = "y" ] then;
+  reboot now
+elif [ "$RBQ" = "n" ] then;
+  exit
 fi
