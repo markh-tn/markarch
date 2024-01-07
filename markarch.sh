@@ -176,10 +176,9 @@ elif [ "$DECHOICE" = "4" ]; then
     systemctl enable sddm
 fi
 
-# This was gonna install the script to the users desktop folder but it just wont behave
 if [ "$VIRBOX" = "y" ]; then
     mkdir /home/$USER/Desktop
-    (cd /home/$USER/Desktop && curl -s https://raw.githubusercontent.com/markh-tn/markarch/main/installvboxga.sh -o VirtualBoxGuestAdditions.sh)
+    (cd /home/$USER/Desktop && curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing1-3-2024/installvboxga.sh -o VirtualBoxGuestAdditions.sh)
     chmod +x VirtualBoxGuestAdditions.sh
     echo "VirtualBox Guest Additions Install Script is located at /home/$USER/Desktop/VirtualBoxGuestAdditions.sh"
 fi
