@@ -8,4 +8,5 @@ In the Arch Linux iso, run this command.
 ```
 bash <(curl -L https://raw.githubusercontent.com/markh-tn/markarch/main/markarch.sh)
 ```
-Select your preferences, and there you go!
+Select your preferences, and there you go!\
+If you choose to install Virtual Box Guest Additions, the install script will be located at /home/USERNAME_HERE/Desktop/VirtualBoxGuestAdditions.sh
