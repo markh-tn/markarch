@@ -163,7 +163,7 @@ echo -ne "
 pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg htop archlinux-wallpaper "$BROWSER" --noconfirm --needed
 
 if [ "$DECHOICE" = "1" ]; then
-    pacman -S gnome-terminal mousepad cinnamon lightdm lightdm-gtk-greeter --noconfirm --needed
+    pacman -S gnome-terminal mousepad cinnamon lightdm lightdm-gtk-greeter ristretto --noconfirm --needed
     systemctl enable lightdm
 elif [ "$DECHOICE" = "2" ]; then
     pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
@@ -178,8 +178,8 @@ fi
 
 if [ "$VIRBOX" = "y" ]; then
     mkdir /home/$USER/Desktop
-    (cd /home/$USER/Desktop && curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing1-3-2024/installvboxga.sh -o VirtualBoxGuestAdditions.sh)
-    chmod +x VirtualBoxGuestAdditions.sh
+    (cd /home/$USER/Desktop && curl -s https://raw.githubusercontent.com/markh-tn/markarch/main/installvboxga.sh -o VirtualBoxGuestAdditions.sh)
+    chmod +x /home/$USER/Desktop/VirtualBoxGuestAdditions.sh
     echo "VirtualBox Guest Additions Install Script is located at /home/$USER/Desktop/VirtualBoxGuestAdditions.sh"
 fi
 
@@ -200,7 +200,7 @@ echo -ne "
 --------Installing Extras--------
 ---------------------------------
 "
-pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind ristretto --noconfirm --needed
+pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind --noconfirm --needed
 
 echo -ne "
 ---------------------------------
