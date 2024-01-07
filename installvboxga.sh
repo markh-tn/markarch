@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ "$EUID" -ne 0]; then
+if [[ $EUID -ne 0]]; then
   echo "This script must be run as root. Please use sudo and try again."
   exit
 fi
@@ -10,9 +10,9 @@ modprobe -a vboxguest vboxsf vboxvideo
 systemctl enable vboxservice.service
 
 echo "Installation Complete! Would you like to reboot? [Y/n]"
-read RBQ
-if [ "$RBQ" = "y" ] then;
+read REBOOT
+if [ "$REBOOT" = "y" ] then;
   reboot now
-elif [ "$RBQ" = "n" ] then;
+elif [ "$REBOOT" = "n" ] then;
   exit
 fi
