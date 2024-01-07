@@ -20,6 +20,14 @@ echo -ne "Installation Type:
 "
 read INSTYPE
 
+echo -ne "Choose your desktop environment
+[1] Cinnamon
+[2] XFCE
+[3] LXQT
+[4] KDE Plasma
+"
+read DECHOICE
+
 echo -ne "
 What is the name of your Drive?
 [1] sda
@@ -41,8 +49,8 @@ echo -ne "Choose your web browser:
 [2] Chromium
 [3] Vivaldi
 "
-read WEB_CHOICE
-case "$WEB_CHOICE" in
+read WEBCHOICE
+case "$WEBCHOICE" in
     1) BROWSER="firefox" ;;
     2) BROWSER="chromium" ;;
     3) BROWSER="vivaldi" ;;
@@ -58,9 +66,7 @@ echo -ne "
 "
 if [ "$DRIVNAME" = "1" ]; then
     DEVNAME="sda"
-fi
-
-if [ "$DRIVNAME" = "2" ]; then
+elif [ "$DRIVNAME" = "2" ]; then
     DEVNAME="nvme0n1"
 fi
 # Make sure everything is unmounted
@@ -154,14 +160,27 @@ echo -ne "
 ---------------------------------
 "
 
-pacman -S pulseaudio pulseaudio-alsa pavucontrol cinnamon xorg lightdm lightdm-gtk-greeter mousepad gnome-terminal htop "$BROWSER" --noconfirm --needed
-systemctl enable lightdm
+pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg htop archlinux-wallpaper "$BROWSER" --noconfirm --needed
 
-# This was gonna install the script to the users desktop folder but it just wont behave
+if [ "$DECHOICE" = "1" ]; then
+    pacman -S gnome-terminal mousepad cinnamon lightdm lightdm-gtk-greeter ristretto --noconfirm --needed
+    systemctl enable lightdm
+elif [ "$DECHOICE" = "2" ]; then
+    pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
+    systemctl enable lightdm
+elif [ "$DECHOICE" = "3" ]; then
+    pacman -S lxqt sddm --noconfirm --needed
+    systemctl enable sddm
+elif [ "$DECHOICE" = "4" ]; then
+    pacman -S plasma plasma-wayland-session kde-applications sddm --noconfirm --needed
+    systemctl enable sddm
+fi
+
 if [ "$VIRBOX" = "y" ]; then
-    curl -s https://raw.githubusercontent.com/markh-tn/markarch/testing/installvboxga.sh -O InstallVBoxGA.sh
-    chmod +x installvboxga.sh
-    echo "VirtualBox Guest Additions Install Script is located at /installvboxga.sh"
+    mkdir /home/$USER/Desktop
+    (cd /home/$USER/Desktop && curl -s https://raw.githubusercontent.com/markh-tn/markarch/main/installvboxga.sh -o VirtualBoxGuestAdditions.sh)
+    chmod +x /home/$USER/Desktop/VirtualBoxGuestAdditions.sh
+    echo "VirtualBox Guest Additions Install Script is located at /home/$USER/Desktop/VirtualBoxGuestAdditions.sh"
 fi
 
 if [ "$INSTYPE" = "2" ]; then
@@ -174,9 +193,8 @@ echo -ne "
 echo "Installation Completed! Remove the installation media and reboot"
 echo "Have fun! :)"
 exit
-fi
 
-if [ "$INSTYPE" = "1" ]; then
+elif [ "$INSTYPE" = "1" ]; then
 echo -ne "
 ---------------------------------
 --------Installing Extras--------
