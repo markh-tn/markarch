@@ -169,7 +169,7 @@ elif [ "$DECHOICE" = "2" ]; then
     pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
     systemctl enable lightdm
 elif [ "$DECHOICE" = "3" ]; then
-    pacman -S lxqt sddm --noconfirm --needed
+    pacman -S lxqt sddm mousepad --noconfirm --needed
     systemctl enable sddm
 elif [ "$DECHOICE" = "4" ]; then
     pacman -S plasma plasma-wayland-session kde-applications sddm --noconfirm --needed

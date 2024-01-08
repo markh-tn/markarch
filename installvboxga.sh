@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [[ $EUID -ne 0]] then;
+if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root. Please use sudo and try again."
   exit
 fi
@@ -11,8 +11,9 @@ systemctl enable vboxservice.service
 
 echo "Installation Complete! Would you like to reboot? [Y/n]"
 read REBOOT
-if [ "$REBOOT" = "y" ] then;
+if [ "$REBOOT" = "y" ]; then
   reboot now
-elif [ "$REBOOT" = "n" ] then;
+elif [ "$REBOOT" = "n" ]; then
+  echo "Exiting..."
   exit
 fi
