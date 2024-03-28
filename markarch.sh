@@ -58,7 +58,7 @@ echo -ne "Choose your web browser:
 [8] Microsoft Edge (Proprietary)
 "
 # For some reason I can't get Librewolf working at the moment, maybe soon?
-#[?] Librewolf
+# [?] Librewolf
 
 read WEBCHOICE
 case "$WEBCHOICE" in
