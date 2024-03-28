@@ -52,15 +52,24 @@ echo -ne "Choose your web browser:
 [2] Chromium
 [3] Vivaldi (Has some proprietary code)
 [4] Brave
-[5] Librewolf
+[5] Floorp
+[6] Thorium
+[7] Google Chrome (Proprietary)
+[8] Microsoft Edge (Proprietary)
 "
+# For some reason I can't get Librewolf working at the moment, maybe soon?
+#[?] Librewolf
+
 read WEBCHOICE
 case "$WEBCHOICE" in
     1) BROWSER="firefox" ;;
     2) BROWSER="chromium" ;;
     3) BROWSER="vivaldi" ;;
     4) BROWSER="brave-bin" ;;
-    5) BROWSER="librewolf-bin" ;;
+    5) BROWSER="floorp" ;;
+    6) BROWSER="thorium-browser-bin" ;;
+    7) BROWSER="google-chrome" ;;
+    8) BROWSER="microsoft-edge-stable-bin"
 esac
 
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
@@ -187,7 +196,7 @@ fi
 
 if [ "$BROWSER" = "firefox" ] || [ "$BROWSER" = "chromium" ] || [ "$BROWSER" = "vivaldi" ]; then
     pacman -S "$BROWSER" --noconfirm --needed
-elif [ "$BROWSER" = "brave-bin" ] || [ "$BROWSER" = "librewolf-bin" ]; then
+elif [ "$BROWSER" = "brave-bin" ] || [ "$BROWSER" = "google-chrome" ]; then
     echo "$USER ALL=(ALL) NOPASSWD: /usr/bin/pacman" | sudo tee -a /etc/sudoers >/dev/null
     sudo -u "${USER}" sh -c "cd /home/$USER && git clone https://aur.archlinux.org/${BROWSER}.git && cd ${BROWSER} && makepkg -si --noconfirm"
     rm -rf /home/$USER/$BROWSER
