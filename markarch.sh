@@ -76,16 +76,14 @@ if [ "$DRIVNAME" = "1" ]; then
 elif [ "$DRIVNAME" = "2" ]; then
     DEVNAME="nvme0n1"
 fi
-# Make sure everything is unmounted
+
 umount -A --recursive /mnt
-# For GPT
 parted -s /dev/$DEVNAME mklabel gpt
-# Create Partitions
 parted -s /dev/$DEVNAME mkpart primary fat32 1MB 500MB
 parted -s /dev/$DEVNAME mkpart primary linux-swap 500MB 1.5GB
 parted -s /dev/$DEVNAME mkpart primary ext4 1.5GB 100%
 parted -s /dev/$DEVNAME set 1 boot on
-# Format new Partitions
+
 if [ "$DEVNAME" = "nvme0n1" ]; then
     DEVNAME="nvme0n1p"
 fi
@@ -93,7 +91,6 @@ mkfs.fat -F 32 /dev/"$DEVNAME"1
 mkswap /dev/"$DEVNAME"2
 mkfs.ext4 /dev/"$DEVNAME"3
 
-# Mounting the partitions
 swapon /dev/"$DEVNAME"2
 mount /dev/"$DEVNAME"3 /mnt
 mount --mkdir /dev/"$DEVNAME"1 /mnt/boot/efi
@@ -103,10 +100,10 @@ echo -ne "
 ------Installing Arch Linux------
 ---------------------------------
 "
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils git --noconfirm --needed
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils --noconfirm --needed
 # Network and Bluetooth Stuff that'll probably be needed
 pacstrap /mnt bluez bluez-utils blueman networkmanager network-manager-applet wireless_tools --noconfirm --needed
-# Can't forget fstab
+
 genfstab -U /mnt >> /mnt/etc/fstab
 
 echo -ne "
@@ -167,7 +164,7 @@ echo -ne "
 ---------------------------------
 "
 
-pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg htop archlinux-wallpaper --noconfirm --needed
+pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg htop archlinux-wallpaper git --noconfirm --needed
 
 if [ "$DECHOICE" = "1" ]; then
     pacman -S gnome-terminal mousepad cinnamon lightdm lightdm-gtk-greeter ristretto --noconfirm --needed
