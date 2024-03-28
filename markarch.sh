@@ -16,15 +16,18 @@ echo "The installation will now begin."
 
 echo -ne "Installation Type:
 [1] Normal installation (Includes web browser, LibreOffice, media player, and other utilities.)
-[2] Minimal installation (Includes web browser and basic utilities.)
+[2] Libre installation (Similar to normal installation, but with FOSS alternatives)
+[3] Minimal installation (Includes web browser and basic utilities.)
 "
 read INSTYPE
 
-echo -ne "Choose your desktop environment
+echo -ne "Choose your desktop environment:
 [1] Cinnamon
 [2] XFCE
 [3] LXQT
 [4] KDE Plasma
+[5] GNOME
+[6] None (Install it yourself)
 "
 read DECHOICE
 
@@ -47,13 +50,17 @@ read -s PASS
 echo -ne "Choose your web browser:
 [1] Firefox
 [2] Chromium
-[3] Vivaldi
+[3] Vivaldi (Has some proprietary code)
+[4] Brave
+[5] Librewolf
 "
 read WEBCHOICE
 case "$WEBCHOICE" in
     1) BROWSER="firefox" ;;
     2) BROWSER="chromium" ;;
     3) BROWSER="vivaldi" ;;
+    4) BROWSER="brave-bin" ;;
+    5) BROWSER="librewolf-bin" ;;
 esac
 
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
@@ -160,7 +167,7 @@ echo -ne "
 ---------------------------------
 "
 
-pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg htop archlinux-wallpaper "$BROWSER" --noconfirm --needed
+pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg htop archlinux-wallpaper --noconfirm --needed
 
 if [ "$DECHOICE" = "1" ]; then
     pacman -S gnome-terminal mousepad cinnamon lightdm lightdm-gtk-greeter ristretto --noconfirm --needed
@@ -169,13 +176,32 @@ elif [ "$DECHOICE" = "2" ]; then
     pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
     systemctl enable lightdm
 elif [ "$DECHOICE" = "3" ]; then
-    pacman -S lxqt sddm mousepad --noconfirm --needed
+    pacman -S lxqt sddm mousepad ristretto --noconfirm --needed
     systemctl enable sddm
 elif [ "$DECHOICE" = "4" ]; then
     pacman -S plasma plasma-wayland-session kde-applications sddm --noconfirm --needed
     systemctl enable sddm
+elif [ "$DECHOICE" = "5" ]; then
+    pacman -S gnome gnome-extra gdm --noconfirm --needed
+    systemctl enable gdm
+else
+    echo "No DE has been selected, skipping.."
 fi
 
+if [ "$BROWSER" = "firefox" ] || [ "$BROWSER" = "chromium" ] || [ "$BROWSER" = "vivaldi" ]; then
+    pacman -S "$BROWSER" --noconfirm --needed
+elif [ "$BROWSER" = "brave-bin" ] || [ "$BROWSER" = "librewolf-bin" ]; then
+    echo "$USER ALL=(ALL) NOPASSWD: /usr/bin/pacman" | sudo tee -a /etc/sudoers >/dev/null
+    su $USER
+    (cd /home/$USER && git clone https://aur.archlinux.org/"$BROWSER".git)
+    (cd /home/$USER/$BROWSER && makepkg -si --noconfirm)
+    rm -rf /home/$USER/$BROWSER
+    exit
+fi
+
+if [ "$INSTYPE" != "2" ]; then
+    sed -i '/$USER ALL=(ALL) NOPASSWD: \/usr\/bin\/pacman/d' /etc/sudoers
+fi
 if [ "$VIRBOX" = "y" ]; then
     mkdir /home/$USER/Desktop
     (cd /home/$USER/Desktop && curl -s https://raw.githubusercontent.com/markh-tn/markarch/main/installvboxga.sh -o VirtualBoxGuestAdditions.sh)
@@ -183,7 +209,7 @@ if [ "$VIRBOX" = "y" ]; then
     echo "VirtualBox Guest Additions Install Script is located at /home/$USER/Desktop/VirtualBoxGuestAdditions.sh"
 fi
 
-if [ "$INSTYPE" = "2" ]; then
+if [ "$INSTYPE" = "3" ]; then
     
 echo -ne "
 ---------------------------------
@@ -200,7 +226,27 @@ echo -ne "
 --------Installing Extras--------
 ---------------------------------
 "
-pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind --noconfirm --needed
+pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind discord bitwarden code --noconfirm --needed
+
+
+elif [ "$INSTYPE" = "2"]; then
+echo -ne "
+---------------------------------
+-----Installing FOSS Extras------
+---------------------------------
+"
+pacman -S vlc flatpak neofetch gimp remind bitwarden libreoffice-fresh --noconfirm --needed
+su $USER
+cd /home/$USER
+git clone https://aur.archlinux.org/spotube-bin.git
+git clone https://aur.archlinux.org/vscodium-bin.git
+(cd /home/$USER/spotube-bin && makepkg -si --noconfirm)
+(cd /home/$USER/vscodium-bin && makepkg -si --noconfirm)
+rm -rf /home/$USER/vscodium-bin /home/$USER/spotube-bin
+exit
+sed -i '/$USER ALL=(ALL) NOPASSWD: \/usr\/bin\/pacman/d' /etc/sudoers
+
+fi
 
 echo -ne "
 ---------------------------------
@@ -209,6 +255,5 @@ echo -ne "
 "
 echo "Installation Completed! Remove the installation media and reboot"
 echo "Have fun! :)"
-fi
 EOF
 exit
