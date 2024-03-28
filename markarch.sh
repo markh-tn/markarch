@@ -230,14 +230,9 @@ echo -ne "
 ---------------------------------
 "
 pacman -S vlc flatpak neofetch gimp remind bitwarden libreoffice-fresh --noconfirm --needed
-cd /home/$USER
-git clone https://aur.archlinux.org/spotube-bin.git
-git clone https://aur.archlinux.org/vscodium-bin.git
-sudo -u $USER sh -c "cd /home/$USER/spotube-bin && makepkg -si --noconfirm"
-sudo -u $USER sh -c "cd /home/$USER/vscodium-bin && makepkg -si --noconfirm"
+sudo -u $USER sh -c "cd /home/$USER && git clone https://aur.archlinux.org/spotube-bin.git && cd /home/$USER/spotube-bin && makepkg -si --noconfirm"
+sudo -u $USER sh -c "cd /home/$USER && git clone https://aur.archlinux.org/vscodium-bin.git && cd /home/$USER/vscodium-bin && makepkg -si --noconfirm"
 rm -rf /home/$USER/vscodium-bin /home/$USER/spotube-bin
-cd /
-exit
 sed -i '/$USER ALL=(ALL) NOPASSWD: \/usr\/bin\/pacman/d' /etc/sudoers
 
 fi
