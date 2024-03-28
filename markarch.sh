@@ -189,10 +189,8 @@ if [ "$BROWSER" = "firefox" ] || [ "$BROWSER" = "chromium" ] || [ "$BROWSER" = "
     pacman -S "$BROWSER" --noconfirm --needed
 elif [ "$BROWSER" = "brave-bin" ] || [ "$BROWSER" = "librewolf-bin" ]; then
     echo "$USER ALL=(ALL) NOPASSWD: /usr/bin/pacman" | sudo tee -a /etc/sudoers >/dev/null
-    (cd /home/$USER && git clone https://aur.archlinux.org/"$BROWSER".git)
-    su $USER -c "cd /home/$USER/$BROWSER && makepkg -si --noconfirm"
+    sudo -u "${USER}" sh -c "cd /home/$USER && git clone https://aur.archlinux.org/${BROWSER}.git && cd ${BROWSER} && makepkg -si --noconfirm"
     rm -rf /home/$USER/$BROWSER
-    exit
 fi
 
 if [ "$INSTYPE" != "2" ]; then
@@ -235,8 +233,8 @@ pacman -S vlc flatpak neofetch gimp remind bitwarden libreoffice-fresh --noconfi
 cd /home/$USER
 git clone https://aur.archlinux.org/spotube-bin.git
 git clone https://aur.archlinux.org/vscodium-bin.git
-su $USER -c "cd /home/$USER/spotube-bin && makepkg -si --noconfirm"
-su $USER -c "cd /home/$USER/vscodium-bin && makepkg -si --noconfirm"
+sudo -u $USER sh -c "cd /home/$USER/spotube-bin && makepkg -si --noconfirm"
+sudo -u $USER sh -c "cd /home/$USER/vscodium-bin && makepkg -si --noconfirm"
 rm -rf /home/$USER/vscodium-bin /home/$USER/spotube-bin
 cd /
 exit
