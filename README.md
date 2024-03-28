@@ -4,6 +4,7 @@ I'm just using this repo to maybe get better at scripting.\
 Don't seriously use this.
 ## To run this script
 **You MUST have UEFI/EFI enabled.**\
+This script assumes you have your internet connection configured.\
 In the Arch Linux iso, run this command.
 ```
 bash <(curl -L https://raw.githubusercontent.com/markh-tn/markarch/main/markarch.sh)
