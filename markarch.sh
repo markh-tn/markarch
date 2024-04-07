@@ -72,6 +72,26 @@ case "$WEBCHOICE" in
     8) BROWSER="microsoft-edge-stable-bin"
 esac
 
+echo -ne "Choose your code editor (Nano and Vim are pre-installed):
+[0] Default (Nano and Vim)
+[1] Neovim
+[2] GNU Emacs
+[3] Visual Studio Code
+[4] VSCodium
+[5] Cursor
+"
+read CODECHOICE
+if [ -z "$CODECHOICE" ] || [ "$CODECHOICE" = "0" ]; then
+    CODECHOICE="nano vim"
+fi
+case "$CODECHOICE" in
+    1) CODECHOICE="neovim" ;;
+    2) CODECHOICE="emacs" ;;
+    3) CODECHOICE="code" ;;
+    4) CODECHOICE="vscodium-bin" ;;
+    5) CODECHOICE="cursor-appimage" ;;
+esac
+
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
 read VIRBOX
 
@@ -185,7 +205,7 @@ elif [ "$DECHOICE" = "3" ]; then
     pacman -S lxqt sddm mousepad ristretto --noconfirm --needed
     systemctl enable sddm
 elif [ "$DECHOICE" = "4" ]; then
-    pacman -S plasma plasma-wayland-session kde-applications sddm --noconfirm --needed
+    pacman -S plasma-meta plasma-wayland-session kde-applications-meta sddm --noconfirm --needed
     systemctl enable sddm
 elif [ "$DECHOICE" = "5" ]; then
     pacman -S gnome gnome-extra gdm --noconfirm --needed
@@ -196,10 +216,16 @@ fi
 
 if [ "$BROWSER" = "firefox" ] || [ "$BROWSER" = "chromium" ] || [ "$BROWSER" = "vivaldi" ]; then
     pacman -S "$BROWSER" --noconfirm --needed
-elif [ "$BROWSER" = "brave-bin" ] || [ "$BROWSER" = "google-chrome" ]; then
+elif [ "$BROWSER" = "brave-bin" ] || [ "$BROWSER" = "google-chrome" ] || [ "$BROWSER" = "microsoft-edge-stable-bin" ] || [ "$BROWSER" = "thorium-browser-bin" ] || [ "$BROWSER" = "floorp" ]; then
     echo "$USER ALL=(ALL) NOPASSWD: /usr/bin/pacman" | sudo tee -a /etc/sudoers >/dev/null
     sudo -u "${USER}" sh -c "cd /home/$USER && git clone https://aur.archlinux.org/${BROWSER}.git && cd ${BROWSER} && makepkg -si --noconfirm"
     rm -rf /home/$USER/$BROWSER
+fi
+if [ "$CODECHOICE" = "neovim" ] || [ "$CODECHOICE" = "emacs" ] || [ "$CODECHOICE" = "code" ] || [ "$CODECHOICE" = "nano vim" ]; then
+    pacman -S $CODECHOICE --noconfirm --needed
+elif [ "$CODECHOICE" = "vscodium-bin" ] || [ "$CODECHOICE" = "cursor-appimage" ]; then
+    sudo -u $USER sh -c "cd /home/$USER && git clone https://aur.archlinux.org/${CODECHOICE}.git && cd ${CODECHOICE} && makepkg -si --noconfirm"
+    rm -rf /home/$USER/$CODECHOICE
 fi
 
 if [ "$INSTYPE" != "2" ]; then
@@ -229,7 +255,7 @@ echo -ne "
 --------Installing Extras--------
 ---------------------------------
 "
-pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind discord bitwarden code --noconfirm --needed
+pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind discord bitwarden --noconfirm --needed
 
 
 elif [ "$INSTYPE" = "2" ]; then
