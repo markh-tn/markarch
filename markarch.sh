@@ -205,7 +205,7 @@ elif [ "$DECHOICE" = "3" ]; then
     pacman -S lxqt sddm mousepad ristretto --noconfirm --needed
     systemctl enable sddm
 elif [ "$DECHOICE" = "4" ]; then
-    pacman -S plasma-meta plasma-wayland-session kde-applications-meta sddm --noconfirm --needed
+    pacman -S plasma kde-applications sddm --noconfirm --needed
     systemctl enable sddm
 elif [ "$DECHOICE" = "5" ]; then
     pacman -S gnome gnome-extra gdm --noconfirm --needed
@@ -266,8 +266,7 @@ echo -ne "
 "
 pacman -S vlc flatpak neofetch gimp remind bitwarden libreoffice-fresh --noconfirm --needed
 sudo -u $USER sh -c "cd /home/$USER && git clone https://aur.archlinux.org/spotube-bin.git && cd /home/$USER/spotube-bin && makepkg -si --noconfirm"
-sudo -u $USER sh -c "cd /home/$USER && git clone https://aur.archlinux.org/vscodium-bin.git && cd /home/$USER/vscodium-bin && makepkg -si --noconfirm"
-rm -rf /home/$USER/vscodium-bin /home/$USER/spotube-bin
+rm -rf /home/$USER/spotube-bin
 sed -i '/$USER ALL=(ALL) NOPASSWD: \/usr\/bin\/pacman/d' /etc/sudoers
 
 fi
