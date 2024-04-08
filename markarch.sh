@@ -76,9 +76,9 @@ echo -ne "Choose your code editor (Nano and Vim are pre-installed):
 [0] Default (Nano and Vim)
 [1] Neovim
 [2] GNU Emacs
-[3] Visual Studio Code
+[3] Visual Studio Code (Proprietary)
 [4] VSCodium
-[5] Cursor
+[5] Cursor (Proprietary)
 "
 read CODECHOICE
 if [ -z "$CODECHOICE" ] || [ "$CODECHOICE" = "0" ]; then
@@ -87,7 +87,7 @@ fi
 case "$CODECHOICE" in
     1) CODECHOICE="neovim" ;;
     2) CODECHOICE="emacs" ;;
-    3) CODECHOICE="code" ;;
+    3) CODECHOICE="visual-studio-code-bin" ;;
     4) CODECHOICE="vscodium-bin" ;;
     5) CODECHOICE="cursor-appimage" ;;
 esac
@@ -205,7 +205,7 @@ elif [ "$DECHOICE" = "3" ]; then
     pacman -S lxqt sddm mousepad ristretto --noconfirm --needed
     systemctl enable sddm
 elif [ "$DECHOICE" = "4" ]; then
-    pacman -S plasma kde-applications sddm --noconfirm --needed
+    pacman -S plasma kde-applications plasma-wayland-session sddm --noconfirm --needed
     systemctl enable sddm
 elif [ "$DECHOICE" = "5" ]; then
     pacman -S gnome gnome-extra gdm --noconfirm --needed
@@ -221,9 +221,9 @@ elif [ "$BROWSER" = "brave-bin" ] || [ "$BROWSER" = "google-chrome" ] || [ "$BRO
     sudo -u "${USER}" sh -c "cd /home/$USER && git clone https://aur.archlinux.org/${BROWSER}.git && cd ${BROWSER} && makepkg -si --noconfirm"
     rm -rf /home/$USER/$BROWSER
 fi
-if [ "$CODECHOICE" = "neovim" ] || [ "$CODECHOICE" = "emacs" ] || [ "$CODECHOICE" = "code" ] || [ "$CODECHOICE" = "nano vim" ]; then
+if [ "$CODECHOICE" = "neovim" ] || [ "$CODECHOICE" = "emacs" ] || [ "$CODECHOICE" = "nano vim" ]; then
     pacman -S $CODECHOICE --noconfirm --needed
-elif [ "$CODECHOICE" = "vscodium-bin" ] || [ "$CODECHOICE" = "cursor-appimage" ]; then
+elif [ "$CODECHOICE" = "vscodium-bin" ] || [ "$CODECHOICE" = "cursor-appimage" ] || [ "$CODECHOICE" = "visual-studio-code-bin" ]; then
     sudo -u $USER sh -c "cd /home/$USER && git clone https://aur.archlinux.org/${CODECHOICE}.git && cd ${CODECHOICE} && makepkg -si --noconfirm"
     rm -rf /home/$USER/$CODECHOICE
 fi
