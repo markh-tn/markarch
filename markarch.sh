@@ -1,36 +1,48 @@
 #!/usr/bin/env bash
 
-echo -ne "
-
-
-
-
-"
+clear
 echo -ne "
 ---------------------------------
 ---Mark's Arch Install Script----
 ---------------------------------
 "
-
 echo "The installation will now begin."
+sleep 3s
+clear
+echo -ne "
+---------------------------------
+---Mark's Arch Install Script----
+---------------------------------
 
+"
 echo -ne "Installation Type:
 [1] Normal installation (Includes web browser, LibreOffice, media player, and other utilities.)
 [2] Libre installation (Similar to normal installation, but with FOSS alternatives)
 [3] Minimal installation (Includes web browser and basic utilities.)
 "
 read INSTYPE
-
-echo -ne "Choose your desktop environment:
+clear
+echo -ne "
+---------------------------------
+-Choose your Desktop Environment-
+---------------------------------
+"
+echo -ne "
 [1] Cinnamon
 [2] XFCE
 [3] LXQT
-[4] KDE Plasma
-[5] GNOME
-[6] None (Install it yourself)
+[4] GNOME
+[5] None (Install it yourself)
 "
 read DECHOICE
-
+# [?] KDE Plasma
+# Plasma install hasn't worked since 6.0 release
+clear
+echo -ne "
+---------------------------------
+-----Hardware Configuration------
+---------------------------------
+"
 echo -ne "
 What is the name of your Drive?
 [1] sda
@@ -38,6 +50,15 @@ What is the name of your Drive?
 "
 read DRIVNAME
 
+echo "Do you want to install VirtualBox Guest Additions? [Y/n]"
+read VIRBOX
+clear
+echo -ne "
+---------------------------------
+--------User Configuration-------
+---------------------------------
+
+"
 echo "What will you call this computer?"
 read PCNAME
 
@@ -46,7 +67,12 @@ read USER
 
 echo "Create a secure password:"
 read -s PASS
-
+clear
+echo -ne "
+---------------------------------
+-------Application Choices-------
+---------------------------------
+"
 echo -ne "Choose your web browser:
 [1] Firefox
 [2] Chromium
@@ -57,9 +83,6 @@ echo -ne "Choose your web browser:
 [7] Google Chrome (Proprietary)
 [8] Microsoft Edge (Proprietary)
 "
-# For some reason I can't get Librewolf working at the moment, maybe soon?
-# [?] Librewolf
-
 read WEBCHOICE
 case "$WEBCHOICE" in
     1) BROWSER="firefox" ;;
@@ -76,8 +99,8 @@ echo -ne "Choose your code editor (Nano and Vim are pre-installed):
 [0] Default (Nano and Vim)
 [1] Neovim
 [2] GNU Emacs
-[3] Visual Studio Code (Proprietary)
-[4] VSCodium
+[3] VSCodium
+[4] Visual Studio Code (Proprietary)
 [5] Cursor (Proprietary)
 "
 read CODECHOICE
@@ -87,13 +110,22 @@ fi
 case "$CODECHOICE" in
     1) CODECHOICE="neovim" ;;
     2) CODECHOICE="emacs" ;;
-    3) CODECHOICE="visual-studio-code-bin" ;;
-    4) CODECHOICE="vscodium-bin" ;;
+    3) CODECHOICE="vscodium-bin" ;;
+    4) CODECHOICE="visual-studio-code-bin" ;;
     5) CODECHOICE="cursor-appimage" ;;
 esac
-
-echo "Do you want to install VirtualBox Guest Additions? [Y/n]:"
-read VIRBOX
+if [ "$DRIVNAME" = "1" ]; then
+    DEVNAME="sda"
+elif [ "$DRIVNAME" = "2" ]; then
+    DEVNAME="nvme0n1"
+fi
+clear
+echo "If you continue all data will be erased from $DEVNAME, this is your final warning. Continue? [Y/n]"
+read FINALWARNING
+if [ "$FINALWARNING" = "n" ] || [ "$FINALWARNING" = "N" ]; then
+    echo "Installation has been aborted."
+    exit
+fi
 
 echo -ne "
 ---------------------------------
@@ -129,7 +161,7 @@ echo -ne "
 ------Installing Arch Linux------
 ---------------------------------
 "
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils --noconfirm --needed
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano vi sudo grub efibootmgr os-prober mtools inetutils  --noconfirm --needed
 # Network and Bluetooth Stuff that'll probably be needed
 pacstrap /mnt bluez bluez-utils blueman networkmanager network-manager-applet wireless_tools --noconfirm --needed
 
@@ -205,9 +237,6 @@ elif [ "$DECHOICE" = "3" ]; then
     pacman -S lxqt sddm mousepad ristretto --noconfirm --needed
     systemctl enable sddm
 elif [ "$DECHOICE" = "4" ]; then
-    pacman -S plasma kde-applications plasma-wayland-session sddm --noconfirm --needed
-    systemctl enable sddm
-elif [ "$DECHOICE" = "5" ]; then
     pacman -S gnome gnome-extra gdm --noconfirm --needed
     systemctl enable gdm
 else
@@ -264,7 +293,7 @@ echo -ne "
 -----Installing FOSS Extras------
 ---------------------------------
 "
-pacman -S vlc flatpak neofetch gimp remind bitwarden libreoffice-fresh --noconfirm --needed
+pacman -S vlc flatpak neofetch gimp remind bitwarden libreoffice-fresh element-desktop --noconfirm --needed
 sudo -u $USER sh -c "cd /home/$USER && git clone https://aur.archlinux.org/spotube-bin.git && cd /home/$USER/spotube-bin && makepkg -si --noconfirm"
 rm -rf /home/$USER/spotube-bin
 sed -i '/$USER ALL=(ALL) NOPASSWD: \/usr\/bin\/pacman/d' /etc/sudoers
