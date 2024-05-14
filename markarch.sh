@@ -176,7 +176,11 @@ if [ "$DEVNAME" = "nvme0n1p" ]; then
     DEVNAME="nvme0n1"
 fi
 arch-chroot /mnt /bin/bash <<EOF
-grub-install --efi-directory=/boot/efi --target=x86_64-efi /dev/$DEVNAME --recheck
+if [ -f /sys/firmware/efi]; then
+    grub-install --efi-directory=/boot/efi --target=x86_64-efi /dev/$DEVNAME --recheck
+elif [ -z /sys/firmware/efi ]; then
+    grub-install /dev/$DEVNAME --recheck
+fi
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -ne "
@@ -204,7 +208,6 @@ echo $USER:$PASS | chpasswd
 LINE="$USER ALL=(ALL) ALL"
 echo "$LINE" | sudo EDITOR='tee -a' visudo
 echo root:$PASS | chpasswd
-echo "User Creation Finished."
 
 echo -ne "
 ---------------------------------
@@ -284,7 +287,8 @@ echo -ne "
 --------Installing Extras--------
 ---------------------------------
 "
-pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher neofetch gimp remind discord bitwarden --noconfirm --needed
+pacman -S vlc libreoffice-fresh flatpak qbittorrent spotify-launcher fastfetch gimp remind discord bitwarden --noconfirm --needed
+echo 'alias neofetch="fastfetch -c paleofetch.jsonc"' >> /home/$USER/.bashrc
 
 
 elif [ "$INSTYPE" = "2" ]; then
@@ -293,7 +297,8 @@ echo -ne "
 -----Installing FOSS Extras------
 ---------------------------------
 "
-pacman -S vlc flatpak neofetch gimp remind bitwarden libreoffice-fresh element-desktop --noconfirm --needed
+pacman -S vlc flatpak fastfetch gimp remind bitwarden libreoffice-fresh element-desktop --noconfirm --needed
+echo 'alias neofetch="fastfetch -c paleofetch.jsonc"' >> /home/$USER/.bashrc
 sudo -u $USER sh -c "cd /home/$USER && git clone https://aur.archlinux.org/spotube-bin.git && cd /home/$USER/spotube-bin && makepkg -si --noconfirm"
 rm -rf /home/$USER/spotube-bin
 sed -i '/$USER ALL=(ALL) NOPASSWD: \/usr\/bin\/pacman/d' /etc/sudoers
