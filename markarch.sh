@@ -36,7 +36,7 @@ echo -ne "
 "
 read DECHOICE
 # [?] KDE Plasma
-# Plasma install hasn't worked since 6.0 release
+# Plasma install hasn't worked since 6.0 release, I'll try to fix soon.
 clear
 echo -ne "
 ---------------------------------
@@ -139,12 +139,16 @@ elif [ "$DRIVNAME" = "2" ]; then
 fi
 
 umount -A --recursive /mnt
-parted -s /dev/$DEVNAME mklabel gpt
-parted -s /dev/$DEVNAME mkpart primary fat32 1MB 500MB
-parted -s /dev/$DEVNAME mkpart primary linux-swap 500MB 1.5GB
-parted -s /dev/$DEVNAME mkpart primary ext4 1.5GB 100%
-parted -s /dev/$DEVNAME set 1 boot on
-
+if [ -f /sys/firmware/efi]; then
+    parted -s /dev/$DEVNAME mklabel gpt
+    parted -s /dev/$DEVNAME mkpart primary fat32 1MB 500MB
+    parted -s /dev/$DEVNAME mkpart primary linux-swap 500MB 1.5GB
+    parted -s /dev/$DEVNAME mkpart primary ext4 1.5GB 100%
+    parted -s /dev/$DEVNAME set 1 boot on
+elif [ -z /sys/firmware/efi]; then
+    parted -s /dev/$DEVNAME mklabel msdos
+    parted -s /dev/$DEVNAME mkpart primary linux-swap 1MB 1GB
+    parted -s /dev/$DEVNAME mkpart primary ext4 1GB 100%
 if [ "$DEVNAME" = "nvme0n1" ]; then
     DEVNAME="nvme0n1p"
 fi
