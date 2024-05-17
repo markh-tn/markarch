@@ -139,33 +139,21 @@ elif [ "$DRIVNAME" = "2" ]; then
 fi
 
 umount -A --recursive /mnt
-if [ -f /sys/firmware/efi]; then
-    parted -s /dev/$DEVNAME mklabel gpt
-    parted -s /dev/$DEVNAME mkpart primary fat32 1MB 500MB
-    parted -s /dev/$DEVNAME mkpart primary linux-swap 500MB 1.5GB
-    parted -s /dev/$DEVNAME mkpart primary ext4 1.5GB 100%
-    parted -s /dev/$DEVNAME set 1 boot on
-    if [ "$DEVNAME" = "nvme0n1" ]; then
-        DEVNAME="nvme0n1p"
-    fi
-    mkfs.fat -F 32 /dev/"$DEVNAME"1
-    mkswap /dev/"$DEVNAME"2
-    mkfs.ext4 /dev/"$DEVNAME"3
-    swapon /dev/"$DEVNAME"2
-    mount /dev/"$DEVNAME"3 /mnt
-    mount --mkdir /dev/"$DEVNAME"1 /mnt/boot/efi
-elif [ -z /sys/firmware/efi]; then
-    parted -s /dev/$DEVNAME mklabel msdos
-    parted -s /dev/$DEVNAME mkpart primary linux-swap 1MB 1GB
-    parted -s /dev/$DEVNAME mkpart primary ext4 1GB 100%
-    if [ "$DEVNAME" = "nvme0n1" ]; then
-        DEVNAME="nvme0n1p"
-    fi
-    mkswap /dev/"$DEVNAME"1
-    mkfs.ext4 /dev/"$DEVNAME"2
-    swapon /dev/"$DEVNAME"1
-    mount /dev/"$DEVNAME" 2 /mnt
+# For UEFI
+parted -s /dev/$DEVNAME mklabel gpt
+parted -s /dev/$DEVNAME mkpart primary fat32 1MB 500MB
+parted -s /dev/$DEVNAME mkpart primary linux-swap 500MB 1.5GB
+parted -s /dev/$DEVNAME mkpart primary ext4 1.5GB 100%
+parted -s /dev/$DEVNAME set 1 boot on
+if [ "$DEVNAME" = "nvme0n1" ]; then
+    DEVNAME="nvme0n1p"
 fi
+mkfs.fat -F 32 /dev/"$DEVNAME"1
+mkswap /dev/"$DEVNAME"2
+mkfs.ext4 /dev/"$DEVNAME"3
+swapon /dev/"$DEVNAME"2
+mount /dev/"$DEVNAME"3 /mnt
+mount --mkdir /dev/"$DEVNAME"1 /mnt/boot/efi
 
 echo -ne "
 ---------------------------------
