@@ -32,11 +32,10 @@ echo -ne "
 [2] XFCE
 [3] LXQT
 [4] GNOME
-[5] None (Install it yourself)
+[5] KDE Plasma
+[6] None (Install it yourself)
 "
 read DECHOICE
-# [?] KDE Plasma
-# Plasma install hasn't worked since 6.0 release, I'll try to fix soon.
 clear
 echo -ne "
 ---------------------------------
@@ -92,7 +91,7 @@ case "$WEBCHOICE" in
     5) BROWSER="floorp" ;;
     6) BROWSER="thorium-browser-bin" ;;
     7) BROWSER="google-chrome" ;;
-    8) BROWSER="microsoft-edge-stable-bin"
+    8) BROWSER="microsoft-edge-stable-bin" ;;
 esac
 
 echo -ne "Choose your code editor (Nano and Vim are pre-installed):
@@ -237,8 +236,11 @@ elif [ "$DECHOICE" = "3" ]; then
 elif [ "$DECHOICE" = "4" ]; then
     pacman -S gnome gnome-extra gdm --noconfirm --needed
     systemctl enable gdm
+elif [ "$DECHOICE" = "5" ]; then
+    pacman -S plasma kde-applications sddm --noconfirm --needed
+    systemctl enable sddm
 else
-    echo "No DE has been selected, skipping.."
+    echo "No Desktop Environment has been selected, skipping.."
 fi
 
 if [ "$BROWSER" = "firefox" ] || [ "$BROWSER" = "chromium" ] || [ "$BROWSER" = "vivaldi" ]; then
