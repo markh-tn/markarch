@@ -42,13 +42,11 @@ echo -ne "
 -----Hardware Configuration------
 ---------------------------------
 "
-echo -ne "
-What is the name of your Drive?
-[1] sda
-[2] nvme0n1
-"
-read DRIVNAME
-
+echo "Type the full name of the drive to install Arch on:"
+lsblk -d
+read DEVNAME
+if [ "$DEVNAME" != "nvme0n1" ] || [ "$DEVNAME" != "nvme0n2" ] || [ "$DEVNAME" != "sda" ] || [ "$DEVNAME" != "sdb" ]; then
+    echo "Disk $DEVNAME is not supported at this time."
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]"
 read VIRBOX
 clear
@@ -113,13 +111,8 @@ case "$CODECHOICE" in
     4) CODECHOICE="visual-studio-code-bin" ;;
     5) CODECHOICE="cursor-appimage" ;;
 esac
-if [ "$DRIVNAME" = "1" ]; then
-    DEVNAME="sda"
-elif [ "$DRIVNAME" = "2" ]; then
-    DEVNAME="nvme0n1"
-fi
 clear
-echo "If you continue all data will be erased from $DEVNAME, this is your final warning. Continue? [Y/n]"
+echo -e "\033[31m If you continue all data will be erased from $DEVNAME, this is your final warning. Continue? [Y/n]\033[0m"
 read FINALWARNING
 if [ "$FINALWARNING" = "n" ] || [ "$FINALWARNING" = "N" ]; then
     echo "Installation has been aborted."
@@ -131,12 +124,6 @@ echo -ne "
 -----Configuring Main Drive------
 ---------------------------------
 "
-if [ "$DRIVNAME" = "1" ]; then
-    DEVNAME="sda"
-elif [ "$DRIVNAME" = "2" ]; then
-    DEVNAME="nvme0n1"
-fi
-
 umount -A --recursive /mnt
 # For UEFI
 parted -s /dev/$DEVNAME mklabel gpt
