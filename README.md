@@ -2,6 +2,7 @@
 This is an arch linux installation script.\
 I'm just using this repo to maybe get better at scripting.\
 Don't seriously use this.
+**This Script has not been worked on since 2024. Please don't use this.**
 ## To run this script
 **You MUST have UEFI/EFI enabled.**\
 This script assumes you have your internet connection configured.\
