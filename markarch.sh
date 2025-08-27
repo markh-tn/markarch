@@ -47,6 +47,9 @@ lsblk -d
 read DEVNAME
 if [ "$DEVNAME" != "nvme0n1" ] || [ "$DEVNAME" != "nvme0n2" ] || [ "$DEVNAME" != "sda" ] || [ "$DEVNAME" != "sdb" ]; then
     echo "Disk $DEVNAME is not supported at this time."
+    echo "Exiting Installation..."
+    sleep 5s
+    exit
 fi
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]"
 read VIRBOX
