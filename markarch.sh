@@ -43,13 +43,17 @@ echo -ne "
 ---------------------------------
 "
 lsblk -d
-echo "Type the Full Name of the drive you wouldl ike to install Arch Linux on"
+echo "Type the Full Name of the drive you wouldl ike to install Arch Linux on:"
 read DEVNAME
-if [ "$DEVNAME" != "nvme0n1" ] || [ "$DEVNAME" != "nvme0n2" ] || [ "$DEVNAME" != "sda" ] || [ "$DEVNAME" != "sdb" ]; then
+if [ "$DEVNAME" != "nvme0n1" ] && \
+   [ "$DEVNAME" != "nvme0n2" ] && \
+   [ "$DEVNAME" != "sda" ]     && \
+   [ "$DEVNAME" != "sdb" ]; then
     echo "Disk $DEVNAME is not supported at this time."
     echo "Exiting Installation..."
     sleep 5s
-    exit
+    clear
+    exit 1
 fi
 echo "Do you want to install VirtualBox Guest Additions? [Y/n]"
 read VIRBOX
