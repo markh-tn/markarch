@@ -42,8 +42,8 @@ echo -ne "
 -----Hardware Configuration------
 ---------------------------------
 "
-echo "Type the full name of the drive to install Arch on:"
 lsblk -d
+echo "Type the Full Name of the drive you wouldl ike to install Arch Linux on"
 read DEVNAME
 if [ "$DEVNAME" != "nvme0n1" ] || [ "$DEVNAME" != "nvme0n2" ] || [ "$DEVNAME" != "sda" ] || [ "$DEVNAME" != "sdb" ]; then
     echo "Disk $DEVNAME is not supported at this time."
